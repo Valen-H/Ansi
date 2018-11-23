@@ -1,5 +1,5 @@
 
-Commands:
+## Commands:
 	
 	-attr	- Show terminal attributes.	
 	-aux on|off	- Toggle auxillary port.	
@@ -15,3 +15,5 @@ Commands:
 	-paste block|enable	- Toggle pasting.	
 	-sgr params<num|SGR>	- Set graphic rendition.
 
+## Macros:
+	To see the list of all available macros i recommend you to read `ansi.h`.
