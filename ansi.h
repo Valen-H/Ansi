@@ -66,18 +66,43 @@
 #define ACSCP (ACCSI "s")
 #define ACRCP (ACCSI "u")
 #define ACDA (ACCSI "0c")
-#define ACAUX(state) (AC_cur_prv(1049, state))
+#define ACAUX(state) (state ? ACCSI "5i" : ACCSI "4i")
 #define ACCKM(state) (AC_cur_prv(1, state))
 #define ACBLN(state) (AC_cur_prv(12, state))
 #define ACSCR(state) (AC_cur_prv(25, state))
 #define ACESB(state) (AC_cur_prv(1049, state))
 #define ACBPM(state) (AC_cur_prv(2004, state))
 #define ACCOL(state) (AC_cur_prv(3, state))
-#define ACTTL(title) (ACOSC "0;" #title "\a")
+#define ACTTL(title, r) {\
+		r = (char*)calloc(strlen(title) + strlen(ACOSC) + 4, sizeof(char));\
+		strcat(r, ACOSC);\
+		strcat(r, "0;");\
+		strcat(r, title);\
+		strcat(r, "\a\0");\
+	}
 #define ACRST (AC_sgr(False, 1, RESET))
 #define ACSGR(...) (AC_sgr(__VA_ARGS__))
-#define ACMOD(i, r, g, b) (ACOSC "4;" #i ";rgb:" #r "/" #g "/" #b "\e")
-#define ACSSR(t, b) (ACCSI #t ";" #b "r")
+#define ACMOD(i, r, g, b, ret) {\
+		ret = (char*)calloc(strlen(ACOSC) + 11 + strlen(r) + strlen(g) + strlen(b) + strlen(i), sizeof(char));\
+		strcat(ret, ACOSC);\
+		strcat(ret, "4;");\
+		strcat(ret, i);\
+		strcat(ret, ";rgb:");\
+		strcat(ret, r);\
+		strcat(ret, "/");\
+		strcat(ret, g);\
+		strcat(ret, "/");\
+		strcat(ret, b);\
+		strcat(ret, "\e\0");\
+	}
+#define ACSSR(t, b, r) {\
+		r = (char*)calloc(strlen(ACCSI) + 3 + strlen(t) + strlen(b), sizeof(char));\
+		strcat(r, ACCSI);\
+		strcat(r, t);\
+		strcat(r, ";");\
+		strcat(r, b);\
+		strcat(r, "r\0");\
+	}
 #define ACTKN(token) (#token)
 	
 	typedef enum Bool {
@@ -125,7 +150,9 @@
 	char * AC_cur_prv(int par, Bool state);
 	char * AC_cur_pos(int x, int y, char type);
 	char * AC_sgr(Bool isstr, int args, ...);
-	char * AC_sgr_chain(int args, SGR list[], char* joiner, char* ender);
+	char * AC_chain(int args, SGR list[], char* joiner, char* ender);
 	char * AC_sgr_chain_str(const char * prev, const char * str);
+	char* arrjoin(char* strings[], char* separator, int count);
 	
 #endif
+

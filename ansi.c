@@ -3,7 +3,7 @@
 #include <stdarg.h>
 #include <stdlib.h>
 
-static char* arrjoin(char* strings[], char* seperator, int count) {
+char* arrjoin(char* strings[], char* seperator, int count) {
 	register char* str = NULL;
 	register size_t total_length = 0,
     		i = 0;
@@ -67,7 +67,7 @@ char* AC_sgr(Bool isstr, int args, ...) {
 	register char* rr,
 		* r;
 	
-	r = AC_sgr_chain(i, ret, ";", "m");
+	r = AC_chain(i, ret, ";", "m");
 	if (!isstr) {
 		rr = r;
 	} else {
@@ -77,7 +77,7 @@ char* AC_sgr(Bool isstr, int args, ...) {
 	return rr;
 }
 
-char* AC_sgr_chain(int args, SGR list[], char* joiner, char* ender) {
+char* AC_chain(int args, SGR list[], char* joiner, char* ender) {
 	register char** ret = (char**)calloc(args, sizeof(char*));
 	register size_t i;
 	
