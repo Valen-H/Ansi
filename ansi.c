@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 char* arrjoin(char* strings[], char* seperator, int count) {
-	register char* str = NULL;
+	register char* str;
 	register size_t total_length = 0,
     		i = 0;
     	
